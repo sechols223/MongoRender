@@ -1,5 +1,4 @@
 const { MongoClient } = require("mongodb");
-
 // The uri string must be the connection string for the database (obtained on Atlas).
 const uri =
 	"mongodb+srv://dbuser:J7IklKss03UQBrxj@learningcluster.zcjavig.mongodb.net/?retryWrites=true&w=majority&appName=LearningCluster";
@@ -28,9 +27,9 @@ app.get("/say/:name", function (req, res) {
 });
 
 // Route to access database:
-app.get("/api/mongo/:id", function (req, res) {
+app.get("/api/mongo/:name", function (req, res) {
 	const client = new MongoClient(uri);
-	const searchKey = "{ id: '" + req.params.id + "' }";
+	const searchKey = "{ id: '" + req.params.name + "' }";
 	console.log("Looking for: " + searchKey);
 
 	async function run() {
@@ -38,9 +37,7 @@ app.get("/api/mongo/:id", function (req, res) {
 			const database = client.db("sample_airbnb");
 			const parts = database.collection("listingsAndReviews");
 
-			const id = req.params.id;
-			console.log(id);
-			const query = { id: req.params.id };
+			const query = { name: req.params.name };
 
 			const part = await parts.findOne(query);
 			console.log(part);
